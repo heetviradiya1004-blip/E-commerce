@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloTrend | Premium E-Commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: #ffffff;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--dark);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 5rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60vh;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Main Layout Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: var(--primary);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Unified Grid for Products & Checkout Split */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: var(--dark);
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Checkout Panel */
+        .checkout-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 90px;
+        }
+
+        .checkout-panel h3 {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            color: var(--gray);
+        }
+
+        .summary-total {
+            border-top: 2px dashed var(--border);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .btn-checkout {
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 1rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e293b;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">VeloTrend.</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#checkout">Checkout</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="icon-btn">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Elevate Your Everyday Style</h1>
+            <p>Discover our latest collection featuring sleek designs, premium quality materials, and unparalleled everyday comfort built to last.</p>
+            <a href="#shop" class="btn">Shop Collection <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="main-layout">
+            
+            <section id="shop">
+                <h2 class="section-title" style="text-align: left; margin-bottom: 3rem;">Featured Products</h2>
+                <div class="products-grid">
+                    
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" alt="Minimalist Watch" class="product-image">
+                        <div class="product-info">
+                            <span class="product-category">Accessories</span>
+                            <h3 class="product-title">Chrono Minimalist Watch</h3>
+                            <div class="product-footer">
+                                <span class="product-price">$149.00</span>
+                                <button class="btn" onclick="addToCart(149.00)">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80" alt="Sport Sneakers" class="product-image">
+                        <div class="product-info">
+                            <span class="product-category">Footwear</span>
+                            <h3 class="product-title">AeroSport Sneakers</h3>
+                            <div class="product-footer">
+                                <span class="product-price">$89.00</span>
+                                <button class="btn" onclick="addToCart(89.00)">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80" alt="Wireless Headphones" class="product-image">
+                        <div class="product-info">
+                            <span class="product-category">Audio</span>
+                            <h3 class="product-title">SonicPro Wireless Headphones</h3>
+                            <div class="product-footer">
+                                <span class="product-price">$199.00</span>
+                                <button class="btn" onclick="addToCart(199.00)">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="checkout" class="checkout-panel">
+                <h3>Secure Checkout</h3>
+                <form id="payment-form" onsubmit="handlePayment(event)">
+                    
+                    <div class="summary-row">
+                        <span>Items Total</span>
+                        <span id="summary-items">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="summary-shipping">$0.00</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total Amount</span>
+                        <span id="summary-total">$0.00</span>
+                    </div>
+
+                    <h4 style="margin: 1.5rem 0 1rem; font-size: 1rem;">Payment Details</h4>
+                    
+                    <div class="form-group">
+                        <label for="card-name">Cardholder Name</label>
+                        <input type="text" id="card-name" class="form-control" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9101 1121" maxlength="19" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-expiry">Expiry Date</label>
+                            <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvc">CVC</label>
+                            <input type="text" id="card-cvc" class="form-control" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-checkout">Pay Securely</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 VeloTrend E-Commerce. Built for premium performance.</p>
+    </footer>
+
+    <div id="toast" class="toast">Product added to cart!</div>
+
+    <script>
+        let cartCount = 0;
+        let cartTotal = 0;
+
+        function addToCart(price) {
+            cartCount++;
+            cartTotal += price;
+            
+            // Update UI elements
+            document.getElementById('cart-count').innerText = cartCount;
+            document.getElementById('summary-items').innerText = `$${cartTotal.toFixed(2)}`;
+            
+            const shipping = cartTotal > 0 ? 15.00 : 0;
+            document.getElementById('summary-shipping').innerText = `$${shipping.toFixed(2)}`;
+            document.getElementById('summary-total').innerText = `$${(cartTotal + shipping).toFixed(2)}`;
+
+            showToast("Item successfully added to your bag!");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function handlePayment(event) {
+            event.preventDefault();
+            
+            if (cartTotal === 0) {
+                showToast("Your cart is empty! Please add a product first.");
+                return;
+            }
+
+            // Simulate transaction processing
+            const checkoutBtn = document.querySelector('.btn-checkout');
+            checkoutBtn.innerText = "Processing Transaction...";
+            checkoutBtn.disabled = true;
+
+            setTimeout(() => {
+                showToast("🎉 Payment Successful! Thank you for your purchase.");
+                
+                // Reset State
+                cartCount = 0;
+                cartTotal = 0;
+                document.getElementById('cart-count').innerText = cartCount;
+                document.getElementById('summary-items').innerText = "$0.00";
+                document.getElementById('summary-shipping').innerText = "$0.00";
+                document.getElementById('summary-total').innerText = "$0.00";
+                document.getElementById('payment-form').reset();
+                
+                checkoutBtn.innerText = "Pay Securely";
+                checkoutBtn.disabled = false;
+            }, 2500);
+        }
+
+        // Automatic formatting for Card Number input field
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+        });
+
+        // Automatic formatting for Expiry Date input field
+        document.getElementById('card-expiry').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{2})/, '$1/').trim();
+        });
+    </script>
+</body>
+</html>
